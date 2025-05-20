@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="626.0" prefWidth="681.0" style="-fx-background-color: #e3f2fd;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AgentesF">
+    <children>
+        <VBox alignment="CENTER" prefHeight="686.0" prefWidth="714.0" spacing="10.0">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Agentes Agencia" textFill="#2196f3">
+                <font>
+                    <Font name="System Bold" size="30.0" />
+                </font>
+            </Label>
+            <TableView fx:id="tableAgentes" maxHeight="360.0" maxWidth="600.0" prefHeight="360.0" prefWidth="560.0">
+                <columns>
+                    <TableColumn fx:id="colID" prefWidth="50.0" text="ID" />
+                    <TableColumn fx:id="colNombre" prefWidth="150.0" text="Nombre" />
+                    <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
+                    <TableColumn fx:id="colCodigoEmpleado" prefWidth="100.0" text="Código Empleado" />
+                    <TableColumn fx:id="colOficina" prefWidth="100.0" text="Oficina" />
+                    <TableColumn fx:id="colActivo" prefWidth="50.0" text="Activo" />
+                </columns>
+            </TableView>
+            <VBox alignment="CENTER" spacing="10.0">
+                <Button fx:id="btnAgregar" onAction="#handleAgregarAgente" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" text="Agregar Agente" />
+                <Button fx:id="btnEditar" onAction="#handleEditarAgente" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;" text="Editar">
+                    <font>
+                        <Font name="Arial" size="12.0" />
+                    </font>
+                </Button>
+                <Button fx:id="btnEliminar" onAction="#handleEliminarAgente" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar">
+                    <font>
+                        <Font name="Arial" size="12.0" />
+                    </font>
+                </Button>
+                <Button onAction="#handleVolver" style="-fx-background-color: #FFC107; -fx-text-fill: black; -fx-font-weight: bold;" text="Volver" />
+                <Button fx:id="btnGestionarReservas" onAction="#handleGestionarReservas"
+                        style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold;"
+                        text="Gestionar Reservas" />
+            </VBox>
+        </VBox>
+    </children>
+</StackPane>

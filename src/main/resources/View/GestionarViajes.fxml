@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10.0" alignment="CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GestionarViajesF">
+    <Label text="Gestión de Viajes" style="-fx-font-size: 24px; -fx-text-fill: #FF5722;" />
+    <TableView fx:id="tableViajes" prefHeight="300.0" prefWidth="600.0">
+        <columns>
+            <TableColumn fx:id="colIDViaje" text="ID Viaje" prefWidth="100.0" />
+            <TableColumn fx:id="colDestino" text="Destino" prefWidth="200.0" />
+            <TableColumn fx:id="colFechaSalida" text="Fecha Salida" prefWidth="150.0" />
+            <TableColumn fx:id="colFechaRegreso" text="Fecha Regreso" prefWidth="150.0" />
+            <TableColumn fx:id="colPrecio" text="Precio" prefWidth="150.0" />
+        </columns>
+    </TableView>
+    <HBox spacing="10.0" alignment="CENTER">
+        <Button text="Añadir Viaje" onAction="#handleAgregarViaje" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+        <Button text="Editar Viaje" onAction="#handleEditarViaje" style="-fx-background-color: #2196F3; -fx-text-fill: white;" />
+        <Button text="Eliminar Viaje" onAction="#handleEliminarViaje" style="-fx-background-color: #F44336; -fx-text-fill: white;" />
+    </HBox>
+</VBox>

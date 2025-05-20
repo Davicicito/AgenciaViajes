@@ -1,0 +1,174 @@
+package DAO;
+
+import baseDatos.ConnectionBD;
+import model.Reservas;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ReservaDAO {
+    // Consultas SQL
+    private static final String SQL_ALL = "SELECT * FROM Reservas";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM Reservas WHERE ID_Reserva = ?";
+    private static final String SQL_INSERT_RESERVA = "INSERT INTO Reservas (ID_Cliente, ID_Viaje, ID_Agente, Fecha_salida, Fecha_regreso, Estado) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE Reservas SET ID_Cliente = ?, ID_Viaje = ?, ID_Agente = ?, Fecha_salida = ?, Fecha_regreso = ?, Estado = ? WHERE ID_Reserva = ?";
+    private static final String SQL_DELETE = "DELETE FROM Reservas WHERE ID_Reserva = ?";
+    private static final String SQL_FIND_BY_CLIENT_ID = "SELECT * FROM Reservas WHERE ID_Cliente = ?";
+    private static final String SQL_FIND_ALL_DETALLES = "SELECT r.ID_Reserva, r.ID_Cliente, r.ID_Viaje, r.Fecha_salida, r.Fecha_regreso, r.Estado, " +
+            "v.Destino, v.Fecha_salida, v.Fecha_regreso, v.Precio " +
+            "FROM Reservas r " +
+            "JOIN Viajes v ON r.ID_Viaje = v.ID_Viaje";
+    private static final String SQL_FIND_RESERVAS_BY_AGENTE = "SELECT * FROM Reservas WHERE ID_Agente = ?";
+
+    // Métodos
+    public static List<Reservas> findAll() {
+        List<Reservas> reservas = new ArrayList<>();
+        try (Connection con = ConnectionBD.getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(SQL_ALL)) {
+
+            while (rs.next()) {
+                Reservas reserva = new Reservas();
+                reserva.setID_Reserva(rs.getInt("ID_Reserva"));
+                reserva.setID_Cliente(rs.getInt("ID_Cliente"));
+                reserva.setID_Viaje(rs.getInt("ID_Viaje"));
+                reserva.setID_Agente(rs.getInt("ID_Agente"));
+                reserva.setFecha_salida(rs.getDate("Fecha_salida").toLocalDate());
+                reserva.setFecha_regreso(rs.getDate("Fecha_regreso").toLocalDate());
+                reserva.setEstado(rs.getString("Estado"));
+                reservas.add(reserva);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservas;
+    }
+
+  public static List<Reservas> findAllReservasConDetalles() {
+       List<Reservas> reservas = new ArrayList<>();
+       try (Connection con = ConnectionBD.getConnection();
+            PreparedStatement pst = con.prepareStatement(SQL_FIND_ALL_DETALLES);
+            ResultSet rs = pst.executeQuery()) {
+
+           while (rs.next()) {
+               Reservas reserva = new Reservas();
+               reserva.setID_Reserva(rs.getInt("ID_Reserva"));
+               reserva.setID_Cliente(rs.getInt("ID_Cliente"));
+               reserva.setID_Viaje(rs.getInt("ID_Viaje"));
+               reserva.setFecha_salida(rs.getDate("Fecha_salida").toLocalDate());
+               reserva.setFecha_regreso(rs.getDate("Fecha_regreso").toLocalDate());
+               reserva.setEstado(rs.getString("Estado"));
+               reservas.add(reserva);
+           }
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+       return reservas;
+   }
+
+    public static Reservas insertReserva(Reservas reserva) {
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement pst = con.prepareStatement(SQL_INSERT_RESERVA, Statement.RETURN_GENERATED_KEYS)) {
+
+            pst.setInt(1, reserva.getID_Cliente());
+            pst.setInt(2, reserva.getID_Viaje());
+            pst.setInt(3, reserva.getID_Agente());
+            pst.setDate(4, Date.valueOf(reserva.getFecha_salida()));
+            pst.setDate(5, Date.valueOf(reserva.getFecha_regreso()));
+            pst.setString(6, reserva.getEstado());
+            pst.executeUpdate();
+
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.next()) {
+                    reserva.setID_Reserva(rs.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            reserva = null;
+        }
+        return reserva;
+    }
+
+    public static boolean updateReserva(Reservas reserva) {
+        boolean actualizado = false;
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
+
+            pst.setInt(1, reserva.getID_Cliente());
+            pst.setInt(2, reserva.getID_Viaje());
+            pst.setInt(3, reserva.getID_Agente());
+            pst.setDate(4, Date.valueOf(reserva.getFecha_salida()));
+            pst.setDate(5, Date.valueOf(reserva.getFecha_regreso()));
+            pst.setString(6, reserva.getEstado());
+            pst.setInt(7, reserva.getID_Reserva());
+            int filasAfectadas = pst.executeUpdate();
+            actualizado = filasAfectadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return actualizado;
+    }
+
+    public static boolean deleteReserva(int id) {
+        boolean eliminado = false;
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement pst = con.prepareStatement(SQL_DELETE)) {
+
+            pst.setInt(1, id);
+            int filasAfectadas = pst.executeUpdate();
+            eliminado = filasAfectadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return eliminado;
+    }
+
+    public static List<Reservas> findByClienteId(int idCliente) {
+        List<Reservas> reservas = new ArrayList<>();
+        try (Connection conn = ConnectionBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(SQL_FIND_BY_CLIENT_ID)) {
+            stmt.setInt(1, idCliente);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Reservas reserva = new Reservas();
+                reserva.setID_Reserva(rs.getInt("ID_Reserva"));
+                reserva.setID_Cliente(rs.getInt("ID_Cliente"));
+                reserva.setID_Viaje(rs.getInt("ID_Viaje"));
+                reserva.setID_Agente(rs.getInt("ID_Agente"));
+                reserva.setFecha_salida(rs.getDate("Fecha_salida").toLocalDate());
+                reserva.setFecha_regreso(rs.getDate("Fecha_regreso").toLocalDate());
+                reserva.setEstado(rs.getString("Estado"));
+                reservas.add(reserva);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservas;
+    }
+    public static List<Reservas> findReservasByAgente(int idAgente) {
+        List<Reservas> reservas = new ArrayList<>();
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement pst = con.prepareStatement(SQL_FIND_RESERVAS_BY_AGENTE)) {
+
+            pst.setInt(1, idAgente); // Filtrar por ID_Agente
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Reservas reserva = new Reservas();
+                    reserva.setID_Reserva(rs.getInt("ID_Reserva"));
+                    reserva.setID_Cliente(rs.getInt("ID_Cliente"));
+                    reserva.setID_Viaje(rs.getInt("ID_Viaje"));
+                    reserva.setFecha_salida(rs.getDate("Fecha_salida").toLocalDate());
+                    reserva.setFecha_regreso(rs.getDate("Fecha_regreso").toLocalDate());
+                    reserva.setEstado(rs.getString("Estado"));
+                    reserva.setID_Agente(rs.getInt("ID_Agente"));
+                    reservas.add(reserva);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservas;
+    }
+}

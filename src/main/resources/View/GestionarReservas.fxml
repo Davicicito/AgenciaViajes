@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="view.GestionarReservasF" prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <Label layoutX="200.0" layoutY="20.0" text="Gestionar Reservas" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <TableView fx:id="tableReservas" layoutX="50.0" layoutY="60.0" prefHeight="200.0" prefWidth="500.0">
+        <columns>
+            <TableColumn fx:id="colIDReserva" text="ID Reserva" prefWidth="100.0" />
+            <TableColumn fx:id="colIDCliente" text="ID Cliente" prefWidth="100.0" />
+            <TableColumn fx:id="colIDAgente" text="ID Agente" prefWidth="100.0" />
+            <TableColumn fx:id="colIDViaje" text="ID Viaje" prefWidth="100.0" />
+            <TableColumn fx:id="colFechaSalida" text="Fecha Salida" prefWidth="100.0" />
+            <TableColumn fx:id="colFechaRegreso" text="Fecha Regreso" prefWidth="100.0" />
+            <TableColumn fx:id="colDestino" text="Destino" prefWidth="100.0" />
+            <TableColumn fx:id="colEstado" text="Estado" prefWidth="100.0" />
+            <TableColumn fx:id="colPrecio" text="Precio" prefWidth="100.0" />
+        </columns>
+    </TableView>
+
+        <Button fx:id="btnEditarReserva" layoutX="200.0" layoutY="300.0" text="Editar Reserva" onAction="#handleEditarReserva" />
+        <Button fx:id="btnEliminarReserva" layoutX="350.0" layoutY="300.0" text="Eliminar Reserva" onAction="#handleEliminarReserva" />
+        <Button fx:id="btnVolver" layoutX="50.0" layoutY="300.0" text="Volver" onAction="#handleVolver" />
+    </children>
+</AnchorPane>
