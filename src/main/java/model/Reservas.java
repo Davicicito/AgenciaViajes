@@ -14,6 +14,7 @@ public class Reservas {
     private LocalDate Fecha_regreso;
     private String Estado;
 
+    // Constructor con parámetros para inicializar una reserva
     public Reservas(int ID_Reserva, int ID_Cliente, int ID_Viaje, int ID_Agente, LocalDate Fecha, String Estado) {
         this.ID_Reserva = ID_Reserva;
         this.ID_Cliente = ID_Cliente;
@@ -22,11 +23,13 @@ public class Reservas {
         this.Estado = Estado;
     }
 
+    // Constructor vacío
     public Reservas() {
         // Constructor vacío
     }
 
-    // Getters y Setters
+    // Getters y Setters para cada atributo
+
     public int getID_Reserva() {
         return ID_Reserva;
     }
@@ -83,15 +86,19 @@ public class Reservas {
         this.Estado = Estado;
     }
 
-    // Obtener atributos de Viajes dinámicamente
+    // Métodos que obtienen información relacionada usando los DAOs
+
+    // Obtener el destino del viaje asociado a esta reserva usando el DAO de Viaje
     public String getDestino() {
         return ViajeDAO.findDestinoById(ID_Viaje);
     }
 
+    // Obtener el precio del viaje asociado a esta reserva usando el DAO de Viaje
     public double getPrecio() {
         return ViajeDAO.findPrecioById(ID_Viaje);
     }
 
+    // Obtener el nombre del agente asociado a esta reserva usando el DAO de Agente
     public String getNombreAgente() {
         return AgenteDAO.findNombreById(ID_Agente);
     }

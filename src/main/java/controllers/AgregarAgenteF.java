@@ -1,12 +1,10 @@
-package view;
+package controllers;
 
 import DAO.AgenteDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Agente;
-
-import java.time.LocalDate;
 
 public class AgregarAgenteF {
 
@@ -26,7 +24,7 @@ public class AgregarAgenteF {
     private Button btnCancelar;
 
     private TableView<Agente> tableAgentes;
-
+    // Asigna la referencia de la tabla de agentes para poder modificarla desde esta ventana
     public void setTableAgentes(TableView<Agente> tableAgentes) {
         this.tableAgentes = tableAgentes;
     }
@@ -34,7 +32,8 @@ public class AgregarAgenteF {
     @FXML
     private PasswordField txtContraseña; // Campo para la contraseña
 
-   @FXML
+    // Asigna la referencia de la tabla de agentes para poder modificarla desde esta ventana
+    @FXML
     private void handleGuardar() {
         try {
             // Obtener los datos de los campos
@@ -94,24 +93,25 @@ public class AgregarAgenteF {
             mostrarAlerta("Error", "Ocurrió un error: " + e.getMessage());
         }
     }
-
+    // Maneja la acción de cancelar: cierra la ventana sin guardar
     @FXML
     private void handleCancelar() {
         cerrarVentana();
     }
+    // Valida que el nombre no esté vacío
     private void validarNombre(String nombre) throws IllegalArgumentException {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacío.");
         }
     }
-
+    // Valida el formato del email con expresión regular
     private void validarEmail(String email) throws IllegalArgumentException {
         String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         if (email == null || !email.matches(regex)) {
             throw new IllegalArgumentException("El email no tiene un formato válido.");
         }
     }
-
+    // Valida que la contraseña no esté vacía y tenga al menos 6 caracteres
     private void validarContraseña(String contraseña) throws IllegalArgumentException {
         if (contraseña == null || contraseña.isEmpty()) {
             throw new IllegalArgumentException("La contraseña no puede estar vacía.");
@@ -120,11 +120,13 @@ public class AgregarAgenteF {
             throw new IllegalArgumentException("La contraseña debe tener al menos 6 caracteres.");
         }
     }
+    // Cierra la ventana actual
     private void cerrarVentana() {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
 
+    // Muestra una alerta con un mensaje personalizado
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
@@ -132,7 +134,7 @@ public class AgregarAgenteF {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-
+    // Carga los datos de un agente en el formulario para ser editado
     public void cargarDatosAgente(Agente agenteSeleccionado) {
         if (agenteSeleccionado != null) {
             txtNombre.setText(agenteSeleccionado.getNombre());

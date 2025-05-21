@@ -11,7 +11,10 @@ public class ConnectionBD {
     public static Connection getConnection() {
         Connection con = null;
         try {
-            ConnectionProperties properties = XMLManager.readXML(new ConnectionProperties(), FILE);
+            // Crear una instancia de XMLManager
+            XMLManager xmlManager = new XMLManager();
+
+            ConnectionProperties properties = xmlManager.readXML(new ConnectionProperties(), FILE);
             con = DriverManager.getConnection(properties.getURL(), properties.getUser(), properties.getPassword());
         } catch (SQLException e) {
             e.printStackTrace();

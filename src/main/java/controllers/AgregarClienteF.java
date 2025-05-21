@@ -1,6 +1,6 @@
-package view;
+package controllers;
+
 import DAO.ClienteDAO;
-import DAO.UsuarioDAO;
 import exceptions.ValidationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,7 +9,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Cliente;
-import model.Usuario;
 
 import java.util.regex.Pattern;
 
@@ -22,15 +21,16 @@ public class AgregarClienteF {
     @FXML
     private TextField txtDNI;
     @FXML
-    private PasswordField txtContraseña; // Nuevo campo para la contraseña
-
+    private PasswordField txtContraseña; // Campo para la contraseña
 
     private TableView<Cliente> tableClientes; // Referencia a la tabla de clientes
 
+    // Establece la tabla de clientes que será usada para insertar o actualizar datos
     public void setTableClientes(TableView<Cliente> tableClientes) {
         this.tableClientes = tableClientes;
     }
 
+    // Maneja la acción de guardar: valida los datos, actualiza o inserta el cliente en la base de datos
     @FXML
     private void handleGuardar() {
         try {
@@ -51,16 +51,16 @@ public class AgregarClienteF {
 
             Cliente clienteExistente = tableClientes.getSelectionModel().getSelectedItem();
             if (clienteExistente != null) {
-                // Actualizar cliente existente
+                // Si ya existe, se actualiza el cliente
                 clienteExistente.setNombre(nombre);
                 clienteExistente.setEmail(email);
                 clienteExistente.setDNI(dni);
                 clienteExistente.setContraseña(contraseña);
 
-                ClienteDAO.updateCliente(clienteExistente); // Actualizar en la base de datos
-                tableClientes.refresh(); // Refrescar la tabla
+                ClienteDAO.updateCliente(clienteExistente);
+                tableClientes.refresh(); // Refresca la tabla para mostrar los cambios
             } else {
-                // Insertar nuevo cliente
+                // Si no existe, se inserta un nuevo cliente
                 Cliente nuevoCliente = new Cliente();
                 nuevoCliente.setNombre(nombre);
                 nuevoCliente.setEmail(email);
@@ -74,11 +74,13 @@ public class AgregarClienteF {
                 }
             }
 
-            cerrarVentana();
+            cerrarVentana(); // Cierra la ventana después de guardar
         } catch (ValidationException e) {
             mostrarAlerta("Error de validación", e.getMessage());
         }
     }
+
+    // Valida que la contraseña no esté vacía y tenga al menos 6 caracteres
     private void validarContraseña(String contraseña) throws ValidationException {
         if (contraseña.isEmpty()) {
             throw new ValidationException("La contraseña no puede estar vacía.");
@@ -87,12 +89,15 @@ public class AgregarClienteF {
             throw new ValidationException("La contraseña debe tener al menos 6 caracteres.");
         }
     }
+
+    // Valida que el nombre no esté vacío
     private void validarNombre(String nombre) throws ValidationException {
         if (nombre.isEmpty()) {
             throw new ValidationException("El nombre no puede estar vacío.");
         }
     }
 
+    // Valida el formato del email con una expresión regular
     private void validarEmail(String email) throws ValidationException {
         String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         if (!Pattern.matches(regex, email)) {
@@ -100,22 +105,26 @@ public class AgregarClienteF {
         }
     }
 
+    // Valida que el DNI tenga exactamente 9 caracteres
     private void validarDNI(String dni) throws ValidationException {
         if (dni.length() != 9) {
             throw new ValidationException("El DNI debe tener 9 caracteres.");
         }
     }
 
+    // Maneja la acción de cancelar: cierra la ventana sin guardar
     @FXML
     private void handleCancelar() {
         cerrarVentana();
     }
 
+    // Cierra la ventana actual
     private void cerrarVentana() {
         Stage stage = (Stage) txtNombre.getScene().getWindow();
         stage.close();
     }
 
+    // Muestra una alerta emergente con un mensaje
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
@@ -124,6 +133,7 @@ public class AgregarClienteF {
         alert.showAndWait();
     }
 
+    // Carga los datos de un cliente en los campos del formulario para ser editado
     public void cargarDatosCliente(Cliente cliente) {
         txtNombre.setText(cliente.getNombre());
         txtEmail.setText(cliente.getEmail());

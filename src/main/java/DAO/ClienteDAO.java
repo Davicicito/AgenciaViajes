@@ -11,10 +11,8 @@ package DAO;
     public class ClienteDAO {
 
         private static final String SQL_ALL = "SELECT * FROM Usuario u JOIN Clientes c ON u.ID_Usuario = c.ID_Usuario";
-        private static final String SQL_FIND_BY_ID = "SELECT * FROM Usuario u JOIN Clientes c ON u.ID_Usuario = c.ID_Usuario WHERE u.ID_Usuario = ?";
         private static final String SQL_FIND_BY_EMAIL = "SELECT * FROM Usuario u JOIN Clientes c ON u.ID_Usuario = c.ID_Usuario WHERE u.Email = ?";
         private static final String SQL_INSERT_CLIENTE = "INSERT INTO Clientes (ID_Usuario, DNI) VALUES (?, ?)";
-        private static final String SQL_CHECK_IF_AGENTE = "SELECT 1 FROM Agente WHERE ID_Usuario = ?";
         private static final String SQL_UPDATE_CLIENTES = "UPDATE Clientes SET DNI = ? WHERE ID_Usuario = ?" ;
 
         // Obtener todos los usuarios (cliente)
@@ -91,29 +89,6 @@ package DAO;
             }
             return cliente;
         }
-        // Busca un cliente por su ID
-        public static Cliente findById(int id) {
-            Cliente cliente = null;
-            try (Connection con = ConnectionBD.getConnection();
-                 PreparedStatement pst = con.prepareStatement(SQL_FIND_BY_ID)) {
-
-                pst.setInt(1, id);
-                try (ResultSet rs = pst.executeQuery()) {
-                    if (rs.next()) {
-                        cliente = new Cliente();
-                        cliente.setID_Usuario(rs.getInt("ID_Usuario"));
-                        cliente.setNombre(rs.getString("Nombre"));
-                        cliente.setEmail(rs.getString("Email"));
-                        cliente.setContraseña(rs.getString("Contraseña"));
-                        cliente.setFechaRegistro(rs.getDate("Fecha_Registro").toLocalDate());
-                        cliente.setDNI(rs.getString("DNI"));
-                    }
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return cliente;
-        }
 
         public static boolean updateCliente(Cliente cliente) {
             if (cliente == null) {
@@ -144,20 +119,6 @@ package DAO;
         public static boolean deleteClienteByID(Cliente cliente) {
             return cliente != null && UsuarioDAO.deleteUsuarioByID(cliente);
         }
-        // Verifica si el usuario ya existe en la tabla agente
-        public static boolean existeComoAgente(int idUsuario) {
-            try (Connection con = ConnectionBD.getConnection();
-                 PreparedStatement pst = con.prepareStatement(SQL_CHECK_IF_AGENTE)) {
 
-                pst.setInt(1, idUsuario);
-                try (ResultSet rs = pst.executeQuery()) {
-                    return rs.next(); // true si hay una fila
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
     }
 

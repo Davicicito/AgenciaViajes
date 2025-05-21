@@ -18,7 +18,9 @@ public class UsuarioDAO {
 
 
 
-    // Inserta un nuevo usuario
+    // Inserta un nuevo usuario en la base de datos si no existe otro con el mismo email.
+    // Recibe un objeto Usuario y devuelve el mismo objeto con el ID asignado si la inserción fue exitosa.
+    // Devuelve null si el usuario es nulo o ya existe otro con ese email.
     public static Usuario insertUsuario(Usuario usuario) {
         if (usuario != null && findByEmail(usuario.getEmail()) == null) {
             try (Connection con = ConnectionBD.getConnection();
@@ -54,7 +56,9 @@ public class UsuarioDAO {
         }
         return usuario;
     }
-
+        // Actualiza un usuario existente en la base de datos.
+        // Recibe un objeto Usuario con los datos actualizados.
+        // Devuelve true si la actualización fue correcta, false en caso contrario.
     public static boolean updateUsuario(Usuario usuario) {
         boolean actualizado = false;
         if (usuario != null) {
@@ -73,6 +77,8 @@ public class UsuarioDAO {
         }
         return actualizado;
     }
+    // Elimina un usuario de la base de datos utilizando el ID del objeto Usuario proporcionado.
+    // Devuelve true si la eliminación fue correcta, false en caso contrario.
    public static boolean deleteUsuarioByID(Usuario usuario) {
        boolean eliminado = false;
        if (usuario != null) {

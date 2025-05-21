@@ -10,7 +10,6 @@ import java.util.List;
 
 public class AgenteDAO {
     private static final String SQL_ALL = "SELECT * FROM Usuario u JOIN Agente a ON u.ID_Usuario = a.ID_Usuario";
-    private static final String SQL_FIND_BY_ID = "SELECT * FROM Usuario u JOIN Agente a ON u.ID_Usuario = a.ID_Usuario WHERE u.ID_Usuario = ?";
     private static final String SQL_FIND_BY_EMAIL = "SELECT * FROM Usuario u JOIN Agente a ON u.ID_Usuario = a.ID_Usuario WHERE u.Email = ?";
     private static final String SQL_INSERT_AGENTE = "INSERT INTO Agente (ID_Usuario, Codigo_Empleado, Oficina, Activo) VALUES (?, ?, ?, ?)";
     private static final String SQL_CHECK_IF_CLIENTE = "SELECT 1 FROM Clientes WHERE ID_Usuario = ?";
@@ -95,31 +94,7 @@ public class AgenteDAO {
         return null;
     }
 
-    // Buscar por ID
-    public static Agente findById(int id) {
-        Agente agente = null;
-        try (Connection con = ConnectionBD.getConnection();
-             PreparedStatement pst = con.prepareStatement(SQL_FIND_BY_ID)) {
 
-            pst.setInt(1, id);
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    agente = new Agente();
-                    agente.setID_Usuario(rs.getInt("ID_Usuario"));
-                    agente.setNombre(rs.getString("Nombre"));
-                    agente.setEmail(rs.getString("Email"));
-                    agente.setContraseña(rs.getString("Contraseña"));
-                    agente.setFechaRegistro(rs.getDate("Fecha_Registro").toLocalDate());
-                    agente.setCodigo_Empleado(rs.getString("Codigo_Empleado"));
-                    agente.setOficina(rs.getString("Oficina"));
-                    agente.setActivo(rs.getBoolean("Activo"));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return agente;
-    }
 
     // Actualiza los datos del agente (solo en Usuario)
    public static boolean updateAgente(Agente agente) {

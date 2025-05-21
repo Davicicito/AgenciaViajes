@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="626.0" prefWidth="681.0" style="-fx-background-color: #e3f2fd;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ClientesF">
+<StackPane prefHeight="626.0" prefWidth="681.0" style="-fx-background-color: #e3f2fd;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClientesF">
     <children>
         <VBox alignment="CENTER" prefHeight="686.0" prefWidth="714.0" spacing="10.0">
          <Label alignment="CENTER" contentDisplay="CENTER" text="Clientes Agencia" textFill="#2196f3">

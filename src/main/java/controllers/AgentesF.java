@@ -1,4 +1,4 @@
-package view;
+package controllers;
 
 import DAO.AgenteDAO;
 import javafx.event.ActionEvent;
@@ -34,6 +34,7 @@ public class AgentesF {
     @FXML
     private TableColumn<Agente, Boolean> colActivo;
 
+    // Inicializa la tabla con las columnas y carga los datos de todos los agentes desde la base de datos
     @FXML
     public void initialize() {
         // Configurar las columnas
@@ -48,7 +49,7 @@ public class AgentesF {
         List<Agente> agentes = AgenteDAO.findAll();
         tableAgentes.getItems().addAll(agentes);
     }
-
+    // Abre la ventana para agregar un nuevo agente
     @FXML
     private void handleAgregarAgente() {
         try {
@@ -66,7 +67,7 @@ public class AgentesF {
             e.printStackTrace();
         }
     }
-
+    // Abre la ventana para editar el agente seleccionado en la tabla
     @FXML
     private void handleEditarAgente() {
         Agente agenteSeleccionado = tableAgentes.getSelectionModel().getSelectedItem();
@@ -93,6 +94,7 @@ public class AgentesF {
         }
     }
 
+    // Elimina el agente seleccionado si se confirma la acción
    @FXML
    private void handleEliminarAgente() {
        Agente agenteSeleccionado = tableAgentes.getSelectionModel().getSelectedItem();
@@ -117,6 +119,7 @@ public class AgentesF {
            mostrarAlerta("Error", "No se pudo eliminar el agente. Verifica si está relacionado con otras tablas.");
        }
    }
+    // Muestra una alerta con un mensaje personalizado
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(titulo);
@@ -124,6 +127,7 @@ public class AgentesF {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+    // Abre la ventana para gestionar las reservas del agente seleccionado
     @FXML
     private void handleGestionarReservas() {
         Agente agenteSeleccionado = tableAgentes.getSelectionModel().getSelectedItem();
@@ -149,6 +153,7 @@ public class AgentesF {
         }
     }
 
+    // Cierra la ventana actual y vuelve a la anterior
     @FXML
     private void handleVolver(ActionEvent actionEvent) {
         Stage stage = (Stage) tableAgentes.getScene().getWindow();

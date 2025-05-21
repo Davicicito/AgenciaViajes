@@ -1,32 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.ReservasClienteF" prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReservasClienteF">
     <children>
-        <Label layoutX="20.0" layoutY="20.0" text="Mis Reservas" style="-fx-font-size: 20px;" />
+        <Label layoutX="20.0" layoutY="20.0" style="-fx-font-size: 20px;" text="Reserva Cliente" />
         <TableView fx:id="tableReservas" layoutX="20.0" layoutY="60.0" prefHeight="300.0" prefWidth="560.0">
             <columns>
-                <TableColumn fx:id="colDestino" text="Destino" prefWidth="150.0" />
-                <TableColumn fx:id="colFechaSalida" text="Fecha Salida" prefWidth="150.0" />
-                <TableColumn fx:id="colFechaRegreso" text="Fecha Regreso" prefWidth="150.0" />
-                <TableColumn fx:id="colEstado" text="Estado" prefWidth="150.0" />
+                <TableColumn fx:id="colDestino" prefWidth="150.0" text="Destino" />
+                <TableColumn fx:id="colFechaSalida" prefWidth="150.0" text="Fecha Salida" />
+                <TableColumn fx:id="colFechaRegreso" prefWidth="150.0" text="Fecha Regreso" />
+                <TableColumn fx:id="colEstado" prefWidth="150.0" text="Estado" />
             </columns>
         </TableView>
-        <Button layoutX="200.0" layoutY="380.0" text="Cancelar Reserva" onAction="#handleCancelarReserva" />
-        <Button layoutX="350.0" layoutY="380.0" text="Modificar Reserva" onAction="#handleModificarReserva" />
-        <Button layoutX="20.0" layoutY="380.0" text="Volver" onAction="#handleVolver" />
+        <Button layoutX="200.0" layoutY="380.0" onAction="#handleCancelarReserva" text="Cancelar Reserva" />
+        <Button layoutX="350.0" layoutY="380.0" onAction="#handleModificarReserva" text="Modificar Reserva" />
+        <Button layoutX="20.0" layoutY="380.0" onAction="#handleVolver" text="Volver" />
     </children>
 </AnchorPane>

@@ -1,4 +1,4 @@
-package view;
+package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,14 +12,13 @@ import java.io.IOException;
 
 public class Principal {
 
+    // Abre una nueva ventana con la vista de Clientes
     @FXML
     private void handleClienteButton() {
         try {
-            // Cargar la vista de clientes
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/Clientes.fxml"));
             Parent root = loader.load();
 
-            // Crear una nueva ventana para mostrar los clientes
             Stage stage = new Stage();
             stage.setTitle("Clientes");
             stage.setScene(new Scene(root));
@@ -28,11 +27,14 @@ public class Principal {
             e.printStackTrace();
         }
     }
+
+    // Abre una nueva ventana con la vista de Agentes
     @FXML
     private void handleAgenteButton(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/View/Agentes.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
+
             Stage stage = new Stage();
             stage.setTitle("Lista de Agentes");
             stage.setScene(scene);
@@ -41,6 +43,8 @@ public class Principal {
             e.printStackTrace();
         }
     }
+
+    // Abre una nueva ventana para gestionar viajes
     @FXML
     private void handleGestionarViajes() {
         try {
@@ -57,6 +61,7 @@ public class Principal {
         }
     }
 
+    // Muestra una alerta informativa con el título y mensaje indicados
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
@@ -64,4 +69,5 @@ public class Principal {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
 }

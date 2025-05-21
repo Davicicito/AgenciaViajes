@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #e3f2fd;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Principal">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #e3f2fd;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Principal">
    <children>
       <VBox alignment="CENTER" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -20,7 +20,7 @@
                <children>
                   <Button fx:id="btnAgente" onAction="#handleAgenteButton" prefHeight="70.0" prefWidth="150.0" style="-fx-background-color: #2196f3; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #1976d2; -fx-border-width: 2;" text="Agente" />
                   <Button fx:id="btnCliente" onAction="#handleClienteButton" prefHeight="70.0" prefWidth="150.0" style="-fx-background-color: #2196f3; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #1976d2; -fx-border-width: 2;" text="Cliente" />
-                  <Button fx:id="btnViajes" onAction="#handleGestionarViajes"  style="-fx-background-color: #FF5722; -fx-text-fill: white; -fx-font-weight: bold;"  text="Viajes" />
+                  <Button fx:id="btnViajes" onAction="#handleGestionarViajes"  prefHeight="70.0" prefWidth="150.0" style="-fx-background-color: #FF5722; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-border-radius: 10;-fx-border-width: 2;"  text="Viajes" />
                </children>
             </HBox>
             <Label alignment="CENTER" contentDisplay="CENTER" text="Agencia de viajes hecha por David Montoro Guillén" textFill="#999999" />

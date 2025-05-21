@@ -1,4 +1,4 @@
-package view;
+package controllers;
 
 import DAO.ReservaDAO;
 import javafx.fxml.FXML;
@@ -32,14 +32,15 @@ public class GestionarReservasF {
     @FXML
     private TableColumn<Reservas, LocalDate> colFechaRegreso;
     @FXML
-    private TableColumn<Reservas, String> colDestino; // Nueva columna
+    private TableColumn<Reservas, String> colDestino;
     @FXML
-    private TableColumn<Reservas, Double> colPrecio;  // Nueva columna
+    private TableColumn<Reservas, Double> colPrecio;
     @FXML
-    private TableColumn<Reservas, Integer> colIDAgente; // Nueva columna para el ID del agente
+    private TableColumn<Reservas, Integer> colIDAgente;
 
     private int idAgente; // Atributo para almacenar el ID del agente
 
+    // Inicializa la tabla de reservas al cargar el FXML
     @FXML
     public void initialize() {
         colIDReserva.setCellValueFactory(new PropertyValueFactory<>("ID_Reserva"));
@@ -52,33 +53,23 @@ public class GestionarReservasF {
         colDestino.setCellValueFactory(new PropertyValueFactory<>("Destino"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("Precio"));
 
-        cargarReservasConDetalles(); // Llama al método sin parámetros
+        cargarReservasConDetalles(); // Carga las reservas del agente (aunque aún no esté asignado el ID)
     }
 
+    // Asigna el ID del agente y recarga las reservas correspondientes
     public void setIdAgente(int idAgente) {
-        this.idAgente = idAgente; // Asigna el ID del agente al atributo
-        cargarReservasConDetalles(); // Cargar reservas después de asignar el ID del agente
+        this.idAgente = idAgente;
+        cargarReservasConDetalles(); // Carga solo las reservas del agente indicado
     }
 
+    // Consulta en la base de datos las reservas del agente actual y las muestra en la tabla
     private void cargarReservasConDetalles() {
-        List<Reservas> reservas = ReservaDAO.findReservasByAgente(idAgente); // Usa el atributo idAgente
+        List<Reservas> reservas = ReservaDAO.findReservasByAgente(idAgente);
         tableReservas.getItems().setAll(reservas);
     }
-    public void abrirGestionarReservas(int idAgente) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/GestionarReservasF.fxml"));
-            Parent root = loader.load();
 
-            GestionarReservasF controller = loader.getController();
-            controller.setIdAgente(idAgente); // Pasa el ID del agente al controlador
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    // Permite editar la reserva seleccionada (fecha salida, fecha regreso y estado)
     @FXML
     private void handleEditarReserva() {
         Reservas reservaSeleccionada = tableReservas.getSelectionModel().getSelectedItem();
@@ -87,20 +78,18 @@ public class GestionarReservasF {
             return;
         }
 
+        // Crear formulario con campos editables
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Editar Reserva");
         dialog.setHeaderText("Modifica los detalles de la reserva");
 
         DatePicker datePickerSalida = new DatePicker(reservaSeleccionada.getFecha_salida());
-        datePickerSalida.setPromptText("Selecciona una nueva fecha de salida");
-
         DatePicker datePickerRegreso = new DatePicker(reservaSeleccionada.getFecha_regreso());
-        datePickerRegreso.setPromptText("Selecciona una nueva fecha de regreso");
-
         ComboBox<String> comboBoxEstado = new ComboBox<>();
         comboBoxEstado.getItems().addAll("Aceptada", "Pendiente", "Cancelada");
         comboBoxEstado.setValue(reservaSeleccionada.getEstado());
 
+        // Mostrar formulario en un GridPane
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -114,6 +103,7 @@ public class GestionarReservasF {
 
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
+        // Si el usuario confirma, se actualiza la reserva
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 reservaSeleccionada.setFecha_salida(datePickerSalida.getValue());
@@ -122,7 +112,7 @@ public class GestionarReservasF {
 
                 boolean actualizado = ReservaDAO.updateReserva(reservaSeleccionada);
                 if (actualizado) {
-                    tableReservas.refresh();
+                    tableReservas.refresh(); // Refresca la tabla visualmente
                     mostrarAlerta("Éxito", "La reserva ha sido actualizada correctamente.");
                 } else {
                     mostrarAlerta("Error", "No se pudo actualizar la reserva.");
@@ -131,6 +121,7 @@ public class GestionarReservasF {
         });
     }
 
+    // Elimina la reserva seleccionada tras confirmar con el usuario
     @FXML
     private void handleEliminarReserva() {
         Reservas reservaSeleccionada = tableReservas.getSelectionModel().getSelectedItem();
@@ -139,27 +130,32 @@ public class GestionarReservasF {
             return;
         }
 
+        // Confirmación antes de eliminar
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
-        confirmacion.setHeaderText(null);
         confirmacion.setContentText("¿Estás seguro de que deseas eliminar esta reserva?");
         if (confirmacion.showAndWait().orElse(null) != ButtonType.OK) {
             return;
         }
 
+        // Eliminación real
         boolean eliminado = ReservaDAO.deleteReserva(reservaSeleccionada.getID_Reserva());
         if (eliminado) {
-            tableReservas.getItems().remove(reservaSeleccionada);
+            tableReservas.getItems().remove(reservaSeleccionada); // Quita la reserva de la tabla
             mostrarAlerta("Éxito", "La reserva ha sido eliminada correctamente.");
         } else {
             mostrarAlerta("Error", "No se pudo eliminar la reserva.");
         }
     }
+
+    // Cierra la ventana actual de gestión de reservas
     @FXML
     private void handleVolver() {
         Stage stage = (Stage) tableReservas.getScene().getWindow();
         stage.close();
-}
+    }
+
+    // Muestra una alerta informativa con el mensaje proporcionado
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
@@ -168,3 +164,4 @@ public class GestionarReservasF {
         alert.showAndWait();
     }
 }
+

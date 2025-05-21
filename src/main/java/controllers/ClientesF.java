@@ -1,4 +1,4 @@
-package view;
+package controllers;
 
 import DAO.ClienteDAO;
 import javafx.event.ActionEvent;
@@ -30,19 +30,21 @@ public class ClientesF {
     @FXML
     private TableColumn<Cliente, String> colDNI;
 
+    // Método que se ejecuta al inicializar el controlador. Configura las columnas y carga los datos.
     @FXML
     public void initialize() {
-        // Configurar las columnas
+        // Asociar columnas con las propiedades del modelo Cliente
         colID.setCellValueFactory(new PropertyValueFactory<>("ID_Usuario"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colDNI.setCellValueFactory(new PropertyValueFactory<>("DNI"));
 
-        // Cargar datos de clientes
+        // Obtener lista de clientes y añadirlos a la tabla
         List<Cliente> clientes = ClienteDAO.findAll();
         tableClientes.getItems().addAll(clientes);
     }
 
+    // Abre la ventana para agregar un nuevo cliente
     @FXML
     private void handleAgregarCliente() {
         try {
@@ -50,7 +52,7 @@ public class ClientesF {
             Parent root = loader.load();
 
             AgregarClienteF controller = loader.getController();
-            controller.setTableClientes(tableClientes); // Pasar la referencia de la tabla
+            controller.setTableClientes(tableClientes); // Pasar referencia de la tabla al nuevo controlador
 
             Stage stage = new Stage();
             stage.setTitle("Agregar Cliente");
@@ -61,16 +63,16 @@ public class ClientesF {
         }
     }
 
+    // Cierra la ventana actual (volver atrás)
     public void handleVolver(ActionEvent actionEvent) {
-        // Cierra la ventana actual
         Stage stage = (Stage) tableClientes.getScene().getWindow();
         stage.close();
     }
 
+    // Abre la ventana para editar los datos de un cliente seleccionado
     public void handleEditarCliente(ActionEvent actionEvent) {
         Cliente clienteSeleccionado = tableClientes.getSelectionModel().getSelectedItem();
         if (clienteSeleccionado == null) {
-            // Mostrar alerta si no se selecciona un cliente
             mostrarAlerta("Error", "Por favor, selecciona un cliente para editar.");
             return;
         }
@@ -80,8 +82,8 @@ public class ClientesF {
             Parent root = loader.load();
 
             AgregarClienteF controller = loader.getController();
-            controller.setTableClientes(tableClientes); // Pasar la referencia de la tabla
-            controller.cargarDatosCliente(clienteSeleccionado); // Cargar datos del cliente seleccionado
+            controller.setTableClientes(tableClientes); // Pasar tabla
+            controller.cargarDatosCliente(clienteSeleccionado); // Cargar datos en el formulario
 
             Stage stage = new Stage();
             stage.setTitle("Editar Cliente");
@@ -92,6 +94,7 @@ public class ClientesF {
         }
     }
 
+    // Muestra una alerta con un mensaje dado
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(titulo);
@@ -99,39 +102,16 @@ public class ClientesF {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
-    @FXML
-    private void handleAgregarReserva() {
-        Cliente clienteSeleccionado = tableClientes.getSelectionModel().getSelectedItem();
-        if (clienteSeleccionado == null) {
-            mostrarAlerta("Error", "Por favor, selecciona un cliente para agregar una reserva.");
-            return;
-        }
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/SeleccionarViaje.fxml"));
-            Parent root = loader.load();
-
-            SeleccionarViajeF controller = loader.getController();
-            controller.setIdCliente(clienteSeleccionado.getID_Usuario()); // Pasar el ID del cliente
-
-            Stage stage = new Stage();
-            stage.setTitle("Seleccionar Viaje");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    // Elimina el cliente seleccionado, previa confirmación
     public void handleEliminarCliente(ActionEvent actionEvent) {
         Cliente clienteSeleccionado = tableClientes.getSelectionModel().getSelectedItem();
         if (clienteSeleccionado == null) {
-            // Mostrar alerta si no se selecciona un cliente
             mostrarAlerta("Error", "Por favor, selecciona un cliente para eliminar.");
             return;
         }
 
-        // Confirmación antes de eliminar
+        // Confirmar antes de eliminar
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText(null);
@@ -140,16 +120,17 @@ public class ClientesF {
             return;
         }
 
-        // Eliminar cliente de la base de datos
+        // Llamada al DAO para eliminar el cliente
         boolean eliminado = ClienteDAO.deleteClienteByID(clienteSeleccionado);
         if (eliminado) {
-            // Eliminar cliente de la tabla
-            tableClientes.getItems().remove(clienteSeleccionado);
+            tableClientes.getItems().remove(clienteSeleccionado); // Quitar de la tabla
             mostrarAlerta("Éxito", "El cliente ha sido eliminado correctamente.");
         } else {
             mostrarAlerta("Error", "No se pudo eliminar el cliente.");
         }
     }
+
+    // Abre una nueva ventana con las reservas del cliente seleccionado
     @FXML
     private void handleVerReservas() {
         Cliente clienteSeleccionado = tableClientes.getSelectionModel().getSelectedItem();
@@ -173,5 +154,5 @@ public class ClientesF {
             e.printStackTrace();
         }
     }
-    }
+}
 
