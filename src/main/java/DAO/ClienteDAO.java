@@ -115,7 +115,7 @@ package DAO;
             }
         }
 
-        // Elimina un cliente por ID (desde tabla Usuario, se asume ON DELETE CASCADE)
+        // Elimina un cliente por ID
         public static boolean deleteClienteByID(Cliente cliente) {
             return cliente != null && UsuarioDAO.deleteUsuarioByID(cliente);
         }
