@@ -14,7 +14,7 @@ public class AgenteDAO {
     private static final String SQL_INSERT_AGENTE = "INSERT INTO Agente (ID_Usuario, Codigo_Empleado, Oficina, Activo) VALUES (?, ?, ?, ?)";
     private static final String SQL_CHECK_IF_CLIENTE = "SELECT 1 FROM Clientes WHERE ID_Usuario = ?";
     private static final String SQL_UPDATE_AGENTE = "UPDATE Agente SET Codigo_Empleado = ?, Oficina = ?, Activo = ? WHERE ID_Usuario = ?";
-    private static final String SQL_FIND_NOMBRE_BY_ID = "SSELECT Nombre FROM Agentes WHERE ID_Agente = ?";
+    private static final String SQL_FIND_NOMBRE_BY_ID = "SELECT Nombre FROM Agentes WHERE ID_Agente = ?";
 
     // Obtener todos los agentes
     public static List<Agente> findAll() {
