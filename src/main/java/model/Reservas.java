@@ -7,20 +7,22 @@ import java.time.LocalDate;
 
 public class Reservas {
     private int ID_Reserva;
-    private int ID_Cliente;
-    private int ID_Viaje;
-    private int ID_Agente;
+    private Agente agente;
+    private Cliente cliente;
     private LocalDate Fecha_salida;
     private LocalDate Fecha_regreso;
     private String Estado;
+    private Viajes viajes;
 
-    // Constructor con parámetros para inicializar una reserva
-    public Reservas(int ID_Reserva, int ID_Cliente, int ID_Viaje, int ID_Agente, LocalDate Fecha, String Estado) {
+
+    public Reservas(int ID_Reserva, Agente agente,Cliente cliente, LocalDate fecha_salida, LocalDate fecha_regreso, String estado, Viajes viajes) {
         this.ID_Reserva = ID_Reserva;
-        this.ID_Cliente = ID_Cliente;
-        this.ID_Viaje = ID_Viaje;
-        this.ID_Agente = ID_Agente;
-        this.Estado = Estado;
+        this.agente = agente;
+        this.cliente = cliente;
+        this.Fecha_salida = fecha_salida;
+        this.Fecha_regreso = fecha_regreso;
+        this.Estado = estado;
+        this.viajes = viajes;
     }
 
     // Constructor vacío
@@ -38,28 +40,29 @@ public class Reservas {
         this.ID_Reserva = ID_Reserva;
     }
 
-    public int getID_Cliente() {
-        return ID_Cliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setID_Cliente(int ID_Cliente) {
-        this.ID_Cliente = ID_Cliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public int getID_Viaje() {
-        return ID_Viaje;
+// Getter para el objeto Viajes
+public Viajes getViajes() {
+    return viajes;
+}
+
+// Setter para el objeto Viajes
+public void setViajes(Viajes viajes) {
+    this.viajes = viajes;
+}
+    public Agente getAgente() {
+        return agente;
     }
 
-    public void setID_Viaje(int ID_Viaje) {
-        this.ID_Viaje = ID_Viaje;
-    }
-
-    public int getID_Agente() {
-        return ID_Agente;
-    }
-
-    public void setID_Agente(int ID_Agente) {
-        this.ID_Agente = ID_Agente;
+    public void setAgente(Agente agente) {
+        this.agente = agente;
     }
 
     public LocalDate getFecha_salida() {
@@ -86,20 +89,30 @@ public class Reservas {
         this.Estado = Estado;
     }
 
-    // Métodos que obtienen información relacionada usando los DAOs
+    public String getDNI() {
+        return cliente.getDNI();
+    }
+
+    public String getCodigo_Empleado() {
+        return agente.getCodigo_Empleado();
+    }
+
+    public int getID_Viaje() {
+        return viajes.getID_Viaje();
+    }
 
     // Obtener el destino del viaje asociado a esta reserva usando el DAO de Viaje
     public String getDestino() {
-        return ViajeDAO.findDestinoById(ID_Viaje);
+        return ViajeDAO.findDestinoById(viajes.getID_Viaje());
     }
 
     // Obtener el precio del viaje asociado a esta reserva usando el DAO de Viaje
     public double getPrecio() {
-        return ViajeDAO.findPrecioById(ID_Viaje);
+        return ViajeDAO.findPrecioById(viajes.getID_Viaje());
     }
 
     // Obtener el nombre del agente asociado a esta reserva usando el DAO de Agente
     public String getNombreAgente() {
-        return AgenteDAO.findNombreById(ID_Agente);
+        return AgenteDAO.findNombreByCodigo(agente.getCodigo_Empleado());
     }
 }

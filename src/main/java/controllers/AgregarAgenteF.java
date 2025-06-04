@@ -76,6 +76,7 @@ public class AgregarAgenteF {
                 nuevoAgente.setOficina(oficina);
                 nuevoAgente.setContraseña(contraseña);
                 nuevoAgente.setActivo(activo);
+                nuevoAgente.setFechaRegistro(java.time.LocalDate.now());
 
                 Agente agenteInsertado = AgenteDAO.insertAgente(nuevoAgente);
                 if (agenteInsertado != null) {
@@ -142,6 +143,7 @@ public class AgregarAgenteF {
             txtCodigoEmpleado.setText(agenteSeleccionado.getCodigo_Empleado());
             txtOficina.setText(agenteSeleccionado.getOficina());
             chkActivo.setSelected(agenteSeleccionado.isActivo());
+            txtContraseña.setText(agenteSeleccionado.getContraseña());
         }
     }
 }

@@ -1,6 +1,8 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Viajes {
     private int ID_Viaje;
@@ -9,6 +11,7 @@ public class Viajes {
     private LocalDate Fecha_regreso;
     private double Precio;
     private int Plazas;
+    private final List<Reservas> reservas = new ArrayList<>();
 
     // Constructor con parámetros para inicializar un viaje
     public Viajes(int ID_Viaje, String Destino, LocalDate Fecha_salida, LocalDate Fecha_regreso, double Precio, int Plazas) {
@@ -20,6 +23,20 @@ public class Viajes {
         this.Plazas = Plazas;
     }
 
+    // Getter para la lista de reservas
+    public List<Reservas> getReservas() {
+        return reservas;
+    }
+
+    // Método para añadir una reserva a la lista
+    public void addReserva(Reservas reserva) {
+        reservas.add(reserva);
+    }
+
+    // Método para eliminar una reserva de la lista
+    public void removeReserva(Reservas reserva) {
+        reservas.remove(reserva);
+    }
     // Constructor vacío
     public Viajes() {
         // Constructor vacío

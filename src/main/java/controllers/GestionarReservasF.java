@@ -1,5 +1,6 @@
 package controllers;
 
+import DAO.AgenteDAO;
 import DAO.ReservaDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.Agente;
 import model.Reservas;
 
 import java.io.IOException;
@@ -38,14 +40,14 @@ public class GestionarReservasF {
     @FXML
     private TableColumn<Reservas, Integer> colIDAgente;
 
-    private int idAgente; // Atributo para almacenar el ID del agente
+    private String codigoEmpleado; // Atributo para almacenar el Código de Empleado del agente
 
     // Inicializa la tabla de reservas al cargar el FXML
     @FXML
     public void initialize() {
         colIDReserva.setCellValueFactory(new PropertyValueFactory<>("ID_Reserva"));
-        colIDCliente.setCellValueFactory(new PropertyValueFactory<>("ID_Cliente"));
-        colIDAgente.setCellValueFactory(new PropertyValueFactory<>("ID_Agente"));
+        colIDCliente.setCellValueFactory(new PropertyValueFactory<>("DNI"));
+        colIDAgente.setCellValueFactory(new PropertyValueFactory<>("Codigo_Empleado"));
         colIDViaje.setCellValueFactory(new PropertyValueFactory<>("ID_Viaje"));
         colEstado.setCellValueFactory(new PropertyValueFactory<>("Estado"));
         colFechaSalida.setCellValueFactory(new PropertyValueFactory<>("Fecha_salida"));
@@ -56,18 +58,20 @@ public class GestionarReservasF {
         cargarReservasConDetalles(); // Carga las reservas del agente (aunque aún no esté asignado el ID)
     }
 
-    // Asigna el ID del agente y recarga las reservas correspondientes
-    public void setIdAgente(int idAgente) {
-        this.idAgente = idAgente;
+    // Asigna el Código de Empleado y recarga las reservas correspondientes
+    public void setCodigoEmpleado(String codigoEmpleado) {
+        this.codigoEmpleado = codigoEmpleado;
         cargarReservasConDetalles(); // Carga solo las reservas del agente indicado
     }
 
-    // Consulta en la base de datos las reservas del agente actual y las muestra en la tabla
     private void cargarReservasConDetalles() {
-        List<Reservas> reservas = ReservaDAO.findReservasByAgente(idAgente);
-        tableReservas.getItems().setAll(reservas);
+        if (codigoEmpleado != null && !codigoEmpleado.isEmpty()) {
+            List<Reservas> reservas = ReservaDAO.findReservasByAgente(codigoEmpleado); // Busca las reservas por Código de Empleado
+            tableReservas.getItems().setAll(reservas); // Muestra las reservas en la tabla
+        } else {
+            tableReservas.getItems().clear(); // Limpia la tabla si no hay Código de Empleado asignado
+        }
     }
-
 
     // Permite editar la reserva seleccionada (fecha salida, fecha regreso y estado)
     @FXML

@@ -1,5 +1,6 @@
 package controllers;
 
+import DAO.ClienteDAO;
 import DAO.ReservaDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class ReservasClienteF {
 
-    private int idCliente; // Variable para almacenar el ID del cliente
+    private String dniCliente; // Variable para almacenar el DNI del cliente
 
     @FXML
     private TableView<Reservas> tableReservas;
@@ -32,19 +33,17 @@ public class ReservasClienteF {
         colFechaSalida.setCellValueFactory(new PropertyValueFactory<>("Fecha_salida"));
         colFechaRegreso.setCellValueFactory(new PropertyValueFactory<>("Fecha_regreso"));
         colEstado.setCellValueFactory(new PropertyValueFactory<>("Estado"));
-
-        cargarReservas();
     }
 
     // Establece el ID del cliente y carga sus reservas
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
-        cargarReservas();
+    public void setDniCliente(String dniCliente) {
+        this.dniCliente = dniCliente; // Inicializa la variable dniCliente
+        cargarReservas(dniCliente);
     }
 
     // Carga las reservas del cliente en la tabla
-    private void cargarReservas() {
-        List<Reservas> reservas = ReservaDAO.findByClienteId(idCliente);
+    private void cargarReservas(String dniCliente) {
+        List<Reservas> reservas = ReservaDAO.findByClienteDNI(dniCliente);
         tableReservas.getItems().setAll(reservas);
     }
 
@@ -55,7 +54,7 @@ public class ReservasClienteF {
         if (reservaSeleccionada != null) {
             boolean eliminado = ReservaDAO.deleteReserva(reservaSeleccionada.getID_Reserva());
             if (eliminado) {
-                cargarReservas();
+                cargarReservas(dniCliente); // Pasa el dniCliente como argumento
                 mostrarMensaje("Reserva cancelada con éxito.");
             } else {
                 mostrarMensaje("Error al cancelar la reserva.");

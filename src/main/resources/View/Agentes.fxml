@@ -18,10 +18,9 @@
             </Label>
             <TableView fx:id="tableAgentes" maxHeight="360.0" maxWidth="600.0" prefHeight="360.0" prefWidth="560.0">
                 <columns>
-                    <TableColumn fx:id="colID" prefWidth="50.0" text="ID" />
+                    <TableColumn fx:id="colCodigoEmpleado" prefWidth="100.0" text="Código Empleado" />
                     <TableColumn fx:id="colNombre" prefWidth="150.0" text="Nombre" />
                     <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
-                    <TableColumn fx:id="colCodigoEmpleado" prefWidth="100.0" text="Código Empleado" />
                     <TableColumn fx:id="colOficina" prefWidth="100.0" text="Oficina" />
                     <TableColumn fx:id="colActivo" prefWidth="50.0" text="Activo" />
                 </columns>

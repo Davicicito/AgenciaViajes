@@ -121,7 +121,7 @@ public class ClientesF {
         }
 
         // Llamada al DAO para eliminar el cliente
-        boolean eliminado = ClienteDAO.deleteClienteByID(clienteSeleccionado);
+        boolean eliminado = ClienteDAO.deleteClienteByDNI(clienteSeleccionado.getDNI());
         if (eliminado) {
             tableClientes.getItems().remove(clienteSeleccionado); // Quitar de la tabla
             mostrarAlerta("Éxito", "El cliente ha sido eliminado correctamente.");
@@ -144,8 +144,7 @@ public class ClientesF {
             Parent root = loader.load();
 
             ReservasClienteF controller = loader.getController();
-            controller.setIdCliente(clienteSeleccionado.getID_Usuario()); // Pasar el ID del cliente
-
+            controller.setDniCliente(clienteSeleccionado.getDNI()); // Pasar el DNI del cliente
             Stage stage = new Stage();
             stage.setTitle("Mis Reservas");
             stage.setScene(new Scene(root));

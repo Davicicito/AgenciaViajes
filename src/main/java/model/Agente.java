@@ -1,11 +1,14 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Agente extends Usuario {
     private String Codigo_Empleado;
     private String Oficina;
     private boolean activo;
+    private final List<Reservas> reservas = new ArrayList<>();
 
     // Constructor con todos los parámetros, incluyendo los heredados
     public Agente(int ID_Usuario, String nombre, String email, String contraseña, LocalDate fechaRegistro, String Codigo_Empleado, String Oficina, boolean activo) {
@@ -13,6 +16,16 @@ public class Agente extends Usuario {
         this.Codigo_Empleado = Codigo_Empleado;
         this.Oficina = Oficina;
         this.activo = activo;
+    }
+    public List<Reservas> getReservas() {
+        return reservas;
+    }
+    public void addReserva(Reservas reserva) {
+        reservas.add(reserva);
+    }
+
+    public void removeReserva(Reservas reserva) {
+        reservas.remove(reserva);
     }
 
     // Constructor vacío

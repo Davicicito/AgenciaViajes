@@ -38,7 +38,6 @@ public class AgentesF {
     @FXML
     public void initialize() {
         // Configurar las columnas
-        colID.setCellValueFactory(new PropertyValueFactory<>("ID_Usuario"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colCodigoEmpleado.setCellValueFactory(new PropertyValueFactory<>("Codigo_Empleado"));
@@ -141,8 +140,7 @@ public class AgentesF {
             Parent root = loader.load();
 
             GestionarReservasF controller = loader.getController();
-            controller.setIdAgente(agenteSeleccionado.getID_Usuario()); // Pasar el ID del agente al controlador
-
+            controller.setCodigoEmpleado(agenteSeleccionado.getCodigo_Empleado()); // Pasar el Código de Empleado al controlador
             Stage stage = new Stage();
             stage.setTitle("Gestionar Reservas");
             stage.setScene(new Scene(root));
