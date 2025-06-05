@@ -50,7 +50,11 @@ public class ReservaDAO {
 
             pst.setString(1, reserva.getCliente().getDNI());
             pst.setInt(2, reserva.getViajes().getID_Viaje());
-            pst.setString(3, reserva.getAgente().getCodigo_Empleado());
+            if (reserva.getAgente() != null) {
+                pst.setString(3, reserva.getAgente().getCodigo_Empleado());
+            } else {
+                pst.setNull(3, java.sql.Types.VARCHAR);
+            }
             pst.setDate(4, Date.valueOf(reserva.getFecha_salida()));
             pst.setDate(5, Date.valueOf(reserva.getFecha_regreso()));
             pst.setString(6, reserva.getEstado());
@@ -74,7 +78,7 @@ public class ReservaDAO {
         }
     }
 
-    // Método para buscar todas las reservas de un cliente por su ID
+    // Método para buscar todas las reservas de un cliente por su dni
     public static List<Reservas> findByClienteDNI(String dniCliente) {
         List<Reservas> reservas = new ArrayList<>();
         try (Connection con = ConnectionBD.getConnection();
@@ -89,6 +93,19 @@ public class ReservaDAO {
                     Viajes viaje = new Viajes();
                     viaje.setID_Viaje(rs.getInt("ID_Viaje"));
                     reserva.setViajes(viaje);
+
+                    // Asigna el agente correctamente
+                    String codigoEmpleado = rs.getString("Codigo_Empleado");
+                    if (codigoEmpleado != null) {
+                        Agente agente = new Agente();
+                        agente.setCodigo_Empleado(codigoEmpleado);
+                        reserva.setAgente(agente);
+                    }
+
+                    // Asigna el cliente
+                    Cliente cliente = new Cliente();
+                    cliente.setDNI(rs.getString("DNI"));
+                    reserva.setCliente(cliente);
 
                     reserva.setFecha_salida(rs.getDate("Fecha_salida").toLocalDate());
                     reserva.setFecha_regreso(rs.getDate("Fecha_regreso").toLocalDate());

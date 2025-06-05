@@ -29,16 +29,17 @@ public class ClientesF {
     private TableColumn<Cliente, String> colEmail;
     @FXML
     private TableColumn<Cliente, String> colDNI;
+    @FXML
+    private TableColumn<Cliente, Boolean> colVIP;
 
     // Método que se ejecuta al inicializar el controlador. Configura las columnas y carga los datos.
     @FXML
     public void initialize() {
         // Asociar columnas con las propiedades del modelo Cliente
-        colID.setCellValueFactory(new PropertyValueFactory<>("ID_Usuario"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colDNI.setCellValueFactory(new PropertyValueFactory<>("DNI"));
-
+        colVIP.setCellValueFactory(new PropertyValueFactory<>("VIP"));
         // Obtener lista de clientes y añadirlos a la tabla
         List<Cliente> clientes = ClienteDAO.findAll();
         tableClientes.getItems().addAll(clientes);
@@ -144,7 +145,7 @@ public class ClientesF {
             Parent root = loader.load();
 
             ReservasClienteF controller = loader.getController();
-            controller.setDniCliente(clienteSeleccionado.getDNI()); // Pasar el DNI del cliente
+            controller.setDniCliente(clienteSeleccionado.getDNI()); // Pasa el DNI del cliente
             Stage stage = new Stage();
             stage.setTitle("Mis Reservas");
             stage.setScene(new Scene(root));

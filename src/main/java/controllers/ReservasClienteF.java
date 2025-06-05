@@ -16,6 +16,7 @@ public class ReservasClienteF {
 
     private String dniCliente; // Variable para almacenar el DNI del cliente
 
+
     @FXML
     private TableView<Reservas> tableReservas;
     @FXML
@@ -96,11 +97,31 @@ public class ReservasClienteF {
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
+        // Dentro de handleModificarReserva, justo antes de llamar a updateReserva:
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+                // Validación de fechas
+                if (datePickerRegreso.getValue().isBefore(datePickerSalida.getValue())) {
+                    mostrarAlerta("Error", "La fecha de regreso no puede ser anterior a la fecha de salida.");
+                    return;
+                }
+                if (datePickerSalida.getValue().isAfter(datePickerRegreso.getValue())) {
+                    mostrarAlerta("Error", "La fecha de salida no puede ser posterior a la fecha de regreso.");
+                    return;
+                }
+
                 reservaSeleccionada.setFecha_salida(datePickerSalida.getValue());
                 reservaSeleccionada.setFecha_regreso(datePickerRegreso.getValue());
                 reservaSeleccionada.setEstado(comboBoxEstado.getValue());
+
+                // Asegúrate de que el cliente está asignado
+               if (reservaSeleccionada.getCliente() == null) {
+                   reservaSeleccionada.setCliente(ClienteDAO.findByDNI(dniCliente));
+                   if (reservaSeleccionada.getCliente() == null) {
+                       mostrarAlerta("Error", "No se encontró el cliente con ese DNI.");
+                       return;
+                   }
+               }
 
                 boolean actualizado = ReservaDAO.updateReserva(reservaSeleccionada);
                 if (actualizado) {

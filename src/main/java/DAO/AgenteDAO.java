@@ -1,6 +1,7 @@
 package DAO;
 
 import baseDatos.ConnectionBD;
+import exceptions.CodigoEmpleadoRepetidoException;
 import model.Agente;
 import model.Usuario;
 
@@ -12,8 +13,8 @@ public class AgenteDAO {
     private static final String SQL_ALL = "SELECT * FROM Agente";
     private static final String SQL_INSERT_AGENTE = "INSERT INTO Agente (Codigo_Empleado, Nombre, Email, Contraseña, Fecha_Registro, Oficina, Activo) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_AGENTE = "UPDATE Agente SET Nombre = ?, Email = ?, Contraseña = ?, Fecha_Registro = ?, Oficina = ?, Activo = ? WHERE Codigo_Empleado = ?";
-    private static final String SQL_FIND_NOMBRE_BY_CODIGO = "SELECT Nombre FROM Agente WHERE Codigo_Empleado = ?";
     private static final String SQL_DELETE_AGENTE = "DELETE FROM Agente WHERE Codigo_Empleado = ?";
+    private static final String SQL_FIND_BY_CODIGO_EMPLEADO = "SELECT * FROM Agente WHERE Codigo_Empleado = ?";
     // Obtener todos los agentes
     public static List<Agente> findAll() {
         List<Agente> agentes = new ArrayList<>();
@@ -39,7 +40,10 @@ public class AgenteDAO {
     }
 
 
-    public static Agente insertAgente(Agente agente) {
+    public static Agente insertAgente(Agente agente) throws CodigoEmpleadoRepetidoException {
+        if (findByCodigoEmpleado(agente.getCodigo_Empleado()) != null) {
+            throw new CodigoEmpleadoRepetidoException("El código de empleado está repetido.");
+        }
         try (Connection con = ConnectionBD.getConnection();
              PreparedStatement pst = con.prepareStatement(SQL_INSERT_AGENTE)) {
 
@@ -76,22 +80,30 @@ public class AgenteDAO {
         }
     }
 
-    public static String findNombreByCodigo(String codigoEmpleado) {
-        String nombre = "";
+    public static Agente findByCodigoEmpleado(String codigoEmpleado) {
         try (Connection con = ConnectionBD.getConnection();
-             PreparedStatement pst = con.prepareStatement(SQL_FIND_NOMBRE_BY_CODIGO)) {
+             PreparedStatement pst = con.prepareStatement(SQL_FIND_BY_CODIGO_EMPLEADO)) {
 
             pst.setString(1, codigoEmpleado);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    nombre = rs.getString("Nombre");
+                    Agente agente = new Agente();
+                    agente.setCodigo_Empleado(rs.getString("Codigo_Empleado"));
+                    agente.setNombre(rs.getString("Nombre"));
+                    agente.setEmail(rs.getString("Email"));
+                    agente.setContraseña(rs.getString("Contraseña"));
+                    agente.setFechaRegistro(rs.getDate("Fecha_Registro").toLocalDate());
+                    agente.setOficina(rs.getString("Oficina"));
+                    agente.setActivo(rs.getBoolean("Activo"));
+                    return agente;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return nombre;
+        return null;
     }
+
     public static boolean deleteAgenteByID(Agente agente) {
         if (agente == null || agente.getCodigo_Empleado() == null) {
             return false;

@@ -18,10 +18,10 @@
          </Label>
             <TableView fx:id="tableClientes" maxHeight="360.0" maxWidth="560.0" prefHeight="360.0" prefWidth="560.0">
                 <columns>
-                    <TableColumn fx:id="colID" prefWidth="50.0" text="ID" />
                     <TableColumn fx:id="colNombre" prefWidth="150.0" text="Nombre" />
                     <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
                     <TableColumn fx:id="colDNI" prefWidth="100.0" text="DNI" />
+                    <TableColumn fx:id="colVIP" prefWidth="80.0" text="VIP" />
                 </columns>
             </TableView>
             <VBox alignment="CENTER" spacing="10.0">

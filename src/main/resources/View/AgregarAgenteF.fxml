@@ -28,6 +28,7 @@
 
         <Label layoutX="50.0" layoutY="240.0" text="Activo:" />
         <CheckBox fx:id="chkActivo" layoutX="150.0" layoutY="235.0" />
+
         <Label layoutX="50.0" layoutY="280.0" text="Contraseña:" />
         <PasswordField fx:id="txtContraseña" layoutX="150.0" layoutY="275.0" prefWidth="300.0" />
 

@@ -10,11 +10,12 @@ package DAO;
 
     public class ClienteDAO {
 
-        private static final String SQL_ALL = "SELECT * FROM Cliente";
-        private static final String SQL_FIND_BY_EMAIL = "SELECT * FROM Cliente WHERE Email = ?";
-        private static final String SQL_INSERT_CLIENTE = "INSERT INTO Cliente (DNI, Nombre, Email, Contraseña, Fecha_Registro, VIP) VALUES (?, ?, ?, ?, ?, ?)";
-        private static final String SQL_UPDATE_CLIENTE = "UPDATE Cliente SET Nombre = ?, Email = ?, Contraseña = ?, Fecha_Registro = ?, VIP = ? WHERE DNI = ?";
-        private static final String SQL_DELETE_CLIENTE = "DELETE FROM Cliente WHERE DNI = ?";
+        private static final String SQL_ALL = "SELECT * FROM Clientes";
+        private static final String SQL_FIND_BY_EMAIL = "SELECT * FROM Clientes WHERE Email = ?";
+        private static final String SQL_INSERT_CLIENTE = "INSERT INTO Clientes (DNI, Nombre, Email, Contraseña, Fecha_Registro, VIP) VALUES (?, ?, ?, ?, ?, ?)";
+        private static final String SQL_UPDATE_CLIENTE = "UPDATE Clientes SET Nombre = ?, Email = ?, Contraseña = ?, Fecha_Registro = ?, VIP = ? WHERE DNI = ?";
+        private static final String SQL_DELETE_CLIENTE = "DELETE FROM Clientes WHERE DNI = ?";
+        private static final String SQL_FIND_BY_DNI = "SELECT * FROM Clientes WHERE DNI = ?";
 
         // Obtener todos los usuarios (cliente)
         public static List<Cliente> findAll() {
@@ -39,12 +40,35 @@ package DAO;
             return clientes;
         }
 
-        public static Cliente findByEmail(String email) {
+//        public static Cliente findByEmail(String email) {
+//            Cliente cliente = null;
+//            try (Connection con = ConnectionBD.getConnection();
+//                 PreparedStatement pst = con.prepareStatement(SQL_FIND_BY_EMAIL)) {
+//
+//                pst.setString(1, email);
+//                try (ResultSet rs = pst.executeQuery()) {
+//                    if (rs.next()) {
+//                        cliente = new Cliente();
+//                        cliente.setDNI(rs.getString("DNI"));
+//                        cliente.setNombre(rs.getString("Nombre"));
+//                        cliente.setEmail(rs.getString("Email"));
+//                        cliente.setContraseña(rs.getString("Contraseña"));
+//                        cliente.setFechaRegistro(rs.getDate("Fecha_Registro").toLocalDate());
+//                        cliente.setVIP(rs.getBoolean("VIP"));
+//                    }
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//            return cliente;
+//        }
+
+        public static Cliente findByDNI(String dni) {
             Cliente cliente = null;
             try (Connection con = ConnectionBD.getConnection();
-                 PreparedStatement pst = con.prepareStatement(SQL_FIND_BY_EMAIL)) {
+                 PreparedStatement pst = con.prepareStatement(SQL_FIND_BY_DNI)) {
 
-                pst.setString(1, email);
+                pst.setString(1, dni);
                 try (ResultSet rs = pst.executeQuery()) {
                     if (rs.next()) {
                         cliente = new Cliente();
@@ -61,7 +85,6 @@ package DAO;
             }
             return cliente;
         }
-
         public static Cliente insertCliente(Cliente cliente) {
             try (Connection con = ConnectionBD.getConnection();
                  PreparedStatement pst = con.prepareStatement(SQL_INSERT_CLIENTE)) {

@@ -111,8 +111,5 @@ public void setViajes(Viajes viajes) {
         return ViajeDAO.findPrecioById(viajes.getID_Viaje());
     }
 
-    // Obtener el nombre del agente asociado a esta reserva usando el DAO de Agente
-    public String getNombreAgente() {
-        return AgenteDAO.findNombreByCodigo(agente.getCodigo_Empleado());
-    }
+
 }

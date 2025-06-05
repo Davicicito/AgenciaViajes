@@ -63,12 +63,23 @@ public class EditarViajeF {
                 viaje = new Viajes(); // Crear nuevo objeto si no existe
             }
 
+
             // Obtener datos desde los campos del formulario
             viaje.setDestino(txtDestino.getText().trim());
             viaje.setFecha_salida(dpFechaSalida.getValue());
             viaje.setFecha_regreso(dpFechaRegreso.getValue());
             viaje.setPrecio(Double.parseDouble(txtPrecio.getText().trim()));
             viaje.setPlazas(Integer.parseInt(txtPlazas.getText().trim()));
+
+            // Validación de fechas
+            if (viaje.getFecha_regreso().isBefore(viaje.getFecha_salida())) {
+                mostrarAlerta("Error", "La fecha de regreso no puede ser anterior a la fecha de salida.");
+                return;
+            }
+            if (viaje.getFecha_salida().isAfter(viaje.getFecha_regreso())) {
+                mostrarAlerta("Error", "La fecha de salida no puede ser posterior a la fecha de regreso.");
+                return;
+            }
 
             boolean operacionExitosa = false;
 
