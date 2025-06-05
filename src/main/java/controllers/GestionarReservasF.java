@@ -1,19 +1,12 @@
 package controllers;
 
-import DAO.AgenteDAO;
 import DAO.ReservaDAO;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import model.Agente;
 import model.Reservas;
-
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,9 +33,8 @@ public class GestionarReservasF {
     @FXML
     private TableColumn<Reservas, Integer> colIDAgente;
 
-    private String codigoEmpleado; // Atributo para almacenar el Código de Empleado del agente
+    private String codigoEmpleado;
 
-    // Inicializa la tabla de reservas al cargar el FXML
     @FXML
     public void initialize() {
         colIDReserva.setCellValueFactory(new PropertyValueFactory<>("ID_Reserva"));
@@ -55,13 +47,13 @@ public class GestionarReservasF {
         colDestino.setCellValueFactory(new PropertyValueFactory<>("Destino"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("Precio"));
 
-        cargarReservasConDetalles(); // Carga las reservas del agente (aunque aún no esté asignado el ID)
+        cargarReservasConDetalles();
     }
 
     // Asigna el Código de Empleado y recarga las reservas correspondientes
     public void setCodigoEmpleado(String codigoEmpleado) {
         this.codigoEmpleado = codigoEmpleado;
-        cargarReservasConDetalles(); // Carga solo las reservas del agente indicado
+        cargarReservasConDetalles();
     }
 
     private void cargarReservasConDetalles() {

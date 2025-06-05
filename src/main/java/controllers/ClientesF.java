@@ -22,8 +22,6 @@ public class ClientesF {
     @FXML
     private TableView<Cliente> tableClientes;
     @FXML
-    private TableColumn<Cliente, Integer> colID;
-    @FXML
     private TableColumn<Cliente, String> colNombre;
     @FXML
     private TableColumn<Cliente, String> colEmail;
@@ -35,12 +33,11 @@ public class ClientesF {
     // Método que se ejecuta al inicializar el controlador. Configura las columnas y carga los datos.
     @FXML
     public void initialize() {
-        // Asociar columnas con las propiedades del modelo Cliente
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colDNI.setCellValueFactory(new PropertyValueFactory<>("DNI"));
         colVIP.setCellValueFactory(new PropertyValueFactory<>("VIP"));
-        // Obtener lista de clientes y añadirlos a la tabla
+
         List<Cliente> clientes = ClienteDAO.findAll();
         tableClientes.getItems().addAll(clientes);
     }
@@ -53,7 +50,7 @@ public class ClientesF {
             Parent root = loader.load();
 
             AgregarClienteF controller = loader.getController();
-            controller.setTableClientes(tableClientes); // Pasar referencia de la tabla al nuevo controlador
+            controller.setTableClientes(tableClientes);
 
             Stage stage = new Stage();
             stage.setTitle("Agregar Cliente");
@@ -83,8 +80,8 @@ public class ClientesF {
             Parent root = loader.load();
 
             AgregarClienteF controller = loader.getController();
-            controller.setTableClientes(tableClientes); // Pasar tabla
-            controller.cargarDatosCliente(clienteSeleccionado); // Cargar datos en el formulario
+            controller.setTableClientes(tableClientes);
+            controller.cargarDatosCliente(clienteSeleccionado);
 
             Stage stage = new Stage();
             stage.setTitle("Editar Cliente");
@@ -124,7 +121,7 @@ public class ClientesF {
         // Llamada al DAO para eliminar el cliente
         boolean eliminado = ClienteDAO.deleteClienteByDNI(clienteSeleccionado.getDNI());
         if (eliminado) {
-            tableClientes.getItems().remove(clienteSeleccionado); // Quitar de la tabla
+            tableClientes.getItems().remove(clienteSeleccionado);
             mostrarAlerta("Éxito", "El cliente ha sido eliminado correctamente.");
         } else {
             mostrarAlerta("Error", "No se pudo eliminar el cliente.");
@@ -145,7 +142,7 @@ public class ClientesF {
             Parent root = loader.load();
 
             ReservasClienteF controller = loader.getController();
-            controller.setDniCliente(clienteSeleccionado.getDNI()); // Pasa el DNI del cliente
+            controller.setDniCliente(clienteSeleccionado.getDNI());
             Stage stage = new Stage();
             stage.setTitle("Mis Reservas");
             stage.setScene(new Scene(root));

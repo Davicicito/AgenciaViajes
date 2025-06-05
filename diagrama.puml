@@ -1,0 +1,48 @@
+@startuml
+class Usuario {
+  -ID_Usuario: int
+  -Nombre: String
+  -Email: String
+  -Contraseña: String
+  -fechaRegistro: LocalDate
+  +generarResumen(): String
+}
+
+class Agente {
+  -Codigo_Empleado: String
+  -Oficina: String
+  -activo: boolean
+  +getReservas(): List<Reservas>
+}
+
+class Cliente {
+  -DNI: String
+  -VIP: boolean
+  +getReservas(): List<Reservas>
+}
+
+class Reservas {
+  -ID_Reserva: int
+  -Fecha_salida: LocalDate
+  -Fecha_regreso: LocalDate
+  -Estado: String
+}
+
+class Viajes {
+  -ID_Viaje: int
+  -Destino: String
+  -Fecha_salida: LocalDate
+  -Fecha_regreso: LocalDate
+  -Precio: double
+  -Plazas: int
+  +getReservas(): List<Reservas>
+}
+
+Usuario <|-- Agente
+Usuario <|-- Cliente
+
+Agente "1" -- "0..*" Reservas : gestiona >
+Cliente "1" -- "0..*" Reservas : hace >
+Viajes "1" -- "0..*" Reservas : corresponde >
+
+@enduml

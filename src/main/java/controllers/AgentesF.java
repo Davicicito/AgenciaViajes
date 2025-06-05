@@ -22,8 +22,6 @@ public class AgentesF {
     @FXML
     private TableView<Agente> tableAgentes;
     @FXML
-    private TableColumn<Agente, Integer> colID;
-    @FXML
     private TableColumn<Agente, String> colNombre;
     @FXML
     private TableColumn<Agente, String> colEmail;
@@ -37,7 +35,6 @@ public class AgentesF {
     // Inicializa la tabla con las columnas y carga los datos de todos los agentes desde la base de datos
     @FXML
     public void initialize() {
-        // Configurar las columnas
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colCodigoEmpleado.setCellValueFactory(new PropertyValueFactory<>("Codigo_Empleado"));
@@ -56,7 +53,7 @@ public class AgentesF {
             Parent root = loader.load();
 
             AgregarAgenteF controller = loader.getController();
-            controller.setTableAgentes(tableAgentes); // Pasar la referencia de la tabla
+            controller.setTableAgentes(tableAgentes);
 
             Stage stage = new Stage();
             stage.setTitle("Agregar Agente");
@@ -80,8 +77,8 @@ public class AgentesF {
             Parent root = loader.load();
 
             AgregarAgenteF controller = loader.getController();
-            controller.setTableAgentes(tableAgentes); // Pasar la referencia de la tabla
-            controller.cargarDatosAgente(agenteSeleccionado); // Cargar datos del agente seleccionado
+            controller.setTableAgentes(tableAgentes);
+            controller.cargarDatosAgente(agenteSeleccionado);
 
             Stage stage = new Stage();
             stage.setTitle("Editar Agente");
@@ -140,7 +137,7 @@ public class AgentesF {
             Parent root = loader.load();
 
             GestionarReservasF controller = loader.getController();
-            controller.setCodigoEmpleado(agenteSeleccionado.getCodigo_Empleado()); // Pasar el Código de Empleado al controlador
+            controller.setCodigoEmpleado(agenteSeleccionado.getCodigo_Empleado());
             Stage stage = new Stage();
             stage.setTitle("Gestionar Reservas");
             stage.setScene(new Scene(root));

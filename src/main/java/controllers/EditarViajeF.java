@@ -8,7 +8,6 @@ import model.Viajes;
 
 public class EditarViajeF {
 
-    // Campos del formulario vinculados desde el archivo FXML
     @FXML
     private TextField txtDestino;
     @FXML
@@ -20,7 +19,7 @@ public class EditarViajeF {
     @FXML
     private TextField txtPlazas;
 
-    // Objeto Viaje que se va a editar o crear
+
     private Viajes viaje;
 
     // Indica si estamos en modo edición (true) o creación (false)
@@ -43,24 +42,13 @@ public class EditarViajeF {
         }
     }
 
-    // Método alternativo para cargar datos del viaje (parecido al anterior)
-    public void setDatosViaje(Viajes viaje) {
-        this.viaje = viaje;
-        if (viaje != null) {
-            txtDestino.setText(viaje.getDestino());
-            dpFechaSalida.setValue(viaje.getFecha_salida());
-            dpFechaRegreso.setValue(viaje.getFecha_regreso());
-            txtPrecio.setText(String.valueOf(viaje.getPrecio()));
-            txtPlazas.setText(String.valueOf(viaje.getPlazas()));
-        }
-    }
 
     // Maneja el evento de guardar el viaje (crear o actualizar)
     @FXML
     private void handleGuardar() {
         try {
             if (viaje == null) {
-                viaje = new Viajes(); // Crear nuevo objeto si no existe
+                viaje = new Viajes(); // Crea un nuevo objeto si no existe
             }
 
 
@@ -84,15 +72,12 @@ public class EditarViajeF {
             boolean operacionExitosa = false;
 
             if (modoEdicion) {
-                // Si estamos en modo edición, actualizar viaje
                 operacionExitosa = ViajeDAO.updateViaje(viaje);
             } else {
-                // Si estamos en modo creación, insertar nuevo viaje
                 Viajes resultado = ViajeDAO.insertViaje(viaje);
                 operacionExitosa = (resultado != null);
             }
 
-            // Mostrar mensaje según resultado
             if (operacionExitosa) {
                 mostrarAlerta("Éxito", "El viaje ha sido guardado correctamente.");
                 cerrarVentana();

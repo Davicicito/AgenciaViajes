@@ -30,7 +30,7 @@ public class AgregarAgenteF {
     }
 
     @FXML
-    private PasswordField txtContraseña; // Campo para la contraseña
+    private PasswordField txtContraseña;
 
     // Asigna la referencia de la tabla de agentes para poder modificarla desde esta ventana
     @FXML

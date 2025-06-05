@@ -27,7 +27,7 @@ public class ReservasClienteF {
     private TableColumn<Reservas, LocalDate> colFechaRegreso;
     @FXML
     private TableColumn<Reservas, String> colEstado;
-    // Inicializa las columnas de la tabla y carga las reservas
+
     @FXML
     public void initialize() {
         colDestino.setCellValueFactory(new PropertyValueFactory<>("Destino"));
@@ -38,7 +38,7 @@ public class ReservasClienteF {
 
     // Establece el ID del cliente y carga sus reservas
     public void setDniCliente(String dniCliente) {
-        this.dniCliente = dniCliente; // Inicializa la variable dniCliente
+        this.dniCliente = dniCliente;
         cargarReservas(dniCliente);
     }
 
@@ -48,7 +48,7 @@ public class ReservasClienteF {
         tableReservas.getItems().setAll(reservas);
     }
 
-    // Cancela la reserva seleccionada, actualiza la tabla y muestra mensaje de resultado
+    // Cancela la reserva seleccionada
     @FXML
     private void handleCancelarReserva() {
         Reservas reservaSeleccionada = tableReservas.getSelectionModel().getSelectedItem();
@@ -96,8 +96,7 @@ public class ReservasClienteF {
 
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        // Dentro de handleModificarReserva, justo antes de llamar a updateReserva:
+        // Si el usuario confirma, se actualiza la reserva
         dialog.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 // Validación de fechas
@@ -114,7 +113,6 @@ public class ReservasClienteF {
                 reservaSeleccionada.setFecha_regreso(datePickerRegreso.getValue());
                 reservaSeleccionada.setEstado(comboBoxEstado.getValue());
 
-                // Asegúrate de que el cliente está asignado
                if (reservaSeleccionada.getCliente() == null) {
                    reservaSeleccionada.setCliente(ClienteDAO.findByDNI(dniCliente));
                    if (reservaSeleccionada.getCliente() == null) {

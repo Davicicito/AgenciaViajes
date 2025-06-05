@@ -31,7 +31,6 @@ public class GestionarViajesF {
     @FXML
     private TableColumn<Viajes, Integer> colPlazas;
 
-    // Inicializa las columnas de la tabla y carga los viajes desde la base de datos
     @FXML
     public void initialize() {
         colIDViaje.setCellValueFactory(new PropertyValueFactory<>("ID_Viaje"));
@@ -41,13 +40,13 @@ public class GestionarViajesF {
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("Precio"));
         colPlazas.setCellValueFactory(new PropertyValueFactory<>("Plazas"));
 
-        cargarViajes(); // Muestra los viajes en la tabla
+        cargarViajes();
     }
 
     // Consulta todos los viajes desde la base de datos y los muestra en la tabla
     private void cargarViajes() {
-        List<Viajes> viajes = ViajeDAO.findAll(); // Obtiene todos los viajes
-        tableViajes.getItems().setAll(viajes);    // Los añade a la tabla
+        List<Viajes> viajes = ViajeDAO.findAll();
+        tableViajes.getItems().setAll(viajes);
     }
 
     // Abre una ventana para añadir un nuevo viaje
@@ -65,7 +64,7 @@ public class GestionarViajesF {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            cargarViajes(); // Refresca la tabla al cerrar la ventana
+            cargarViajes();
         } catch (IOException e) {
             e.printStackTrace();
             mostrarAlerta("Error", "No se pudo abrir la ventana para añadir un viaje.");
@@ -87,21 +86,21 @@ public class GestionarViajesF {
 
             EditarViajeF controller = loader.getController();
             controller.setModoEdicion(true); // Indica que es modo "editar viaje"
-            controller.cargarDatos(viajeSeleccionado); // Carga los datos del viaje seleccionado
+            controller.cargarDatos(viajeSeleccionado);
 
             Stage stage = new Stage();
             stage.setTitle("Editar Viaje");
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
-            cargarViajes(); // Refresca la tabla tras editar
+            cargarViajes();
         } catch (IOException e) {
             e.printStackTrace();
             mostrarAlerta("Error", "No se pudo abrir la ventana para editar el viaje.");
         }
     }
 
-    // Elimina el viaje seleccionado, tras confirmación
+    // Elimina el viaje seleccionado
     @FXML
     private void handleEliminarViaje() {
         Viajes viajeSeleccionado = tableViajes.getSelectionModel().getSelectedItem();
@@ -118,7 +117,7 @@ public class GestionarViajesF {
 
         if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             ViajeDAO.deleteViaje(viajeSeleccionado.getID_Viaje()); // Elimina el viaje
-            cargarViajes(); // Refresca la tabla
+            cargarViajes();
         }
     }
 
