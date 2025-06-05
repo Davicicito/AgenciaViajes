@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2025 a las 12:56:19
+-- Tiempo de generación: 05-06-2025 a las 12:31:03
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -28,8 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `agente` (
-  `ID_Usuario` int(11) NOT NULL,
+  `Nombre` varchar(100) NOT NULL,
+  `Email` varchar(50) NOT NULL,
   `Codigo_Empleado` varchar(20) NOT NULL,
+  `Contraseña` varchar(100) NOT NULL,
+  `Fecha_registro` date NOT NULL DEFAULT '2024-01-01',
   `Oficina` varchar(100) NOT NULL,
   `activo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -38,16 +41,12 @@ CREATE TABLE `agente` (
 -- Volcado de datos para la tabla `agente`
 --
 
-INSERT INTO `agente` (`ID_Usuario`, `Codigo_Empleado`, `Oficina`, `activo`) VALUES
-(2, '0002', 'la rambla', 0),
-(3, '0003', 'montalban', 1),
-(4, '0004', 'Santaella', 1),
-(6, '0015', 'Logroño', 1),
-(18, '0020', 'Burgos', 1),
-(19, '0009', 'Lucena', 1),
-(20, '0010', 'Sevilla', 1),
-(21, '0012', 'Caceres', 0),
-(24, '0016', 'Lugo', 0);
+INSERT INTO `agente` (`Nombre`, `Email`, `Codigo_Empleado`, `Contraseña`, `Fecha_registro`, `Oficina`, `activo`) VALUES
+('Antonio', 'antonio@gmail.com', '0001', 'anto12', '2025-06-04', 'Córdoba', 1),
+('Sergio', 'sergio@gmail.com', '0002', 'sergiroca4', '2025-06-04', 'Caceres', 0),
+('Jesús', 'jesusito@gmail.com', '0003', 'memesito12', '2025-06-04', 'Logroño', 1),
+('Joaquín', 'joaqui@gmail.com', '0004', '1234joaqui', '2025-06-05', 'Malaga', 1),
+('Mari Carmen', 'maricarmen@gmail.com', '0006', '1234maricarmen', '2025-06-05', 'Fernan Nuñez', 1);
 
 -- --------------------------------------------------------
 
@@ -56,23 +55,22 @@ INSERT INTO `agente` (`ID_Usuario`, `Codigo_Empleado`, `Oficina`, `activo`) VALU
 --
 
 CREATE TABLE `clientes` (
-  `ID_Usuario` int(11) NOT NULL,
-  `DNI` varchar(20) NOT NULL
+  `DNI` varchar(20) NOT NULL,
+  `Nombre` varchar(100) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `Contraseña` varchar(100) NOT NULL,
+  `Fecha_registro` date NOT NULL DEFAULT '2024-01-01',
+  `Vip` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `clientes`
 --
 
-INSERT INTO `clientes` (`ID_Usuario`, `DNI`) VALUES
-(5, '12345678P'),
-(7, '78857645R'),
-(8, '78857075R'),
-(9, '12346789O'),
-(10, '12376548H'),
-(11, '31415041U'),
-(22, '60048751K'),
-(25, '78950231P');
+INSERT INTO `clientes` (`DNI`, `Nombre`, `Email`, `Contraseña`, `Fecha_registro`, `Vip`) VALUES
+('12345678P', 'Alfredo', 'alfiler@gmail.com', 'alfi1234.', '2025-06-04', 1),
+('78840356T', 'Jesus', 'memesito45@gmail.com', 'elmeme12', '2025-06-04', 1),
+('98865012N', 'Alfonso', 'alfonsosoler45@gmail.com', '1234alfiler', '2025-06-05', 0);
 
 -- --------------------------------------------------------
 
@@ -82,9 +80,9 @@ INSERT INTO `clientes` (`ID_Usuario`, `DNI`) VALUES
 
 CREATE TABLE `reservas` (
   `ID_Reserva` int(11) NOT NULL,
-  `ID_Cliente` int(11) NOT NULL,
+  `DNI` varchar(20) NOT NULL,
   `ID_Viaje` int(11) NOT NULL,
-  `ID_Agente` int(11) NOT NULL,
+  `Codigo_Empleado` varchar(20) NOT NULL,
   `Estado` varchar(20) NOT NULL,
   `Fecha_salida` date DEFAULT NULL,
   `Fecha_regreso` date DEFAULT NULL
@@ -94,47 +92,8 @@ CREATE TABLE `reservas` (
 -- Volcado de datos para la tabla `reservas`
 --
 
-INSERT INTO `reservas` (`ID_Reserva`, `ID_Cliente`, `ID_Viaje`, `ID_Agente`, `Estado`, `Fecha_salida`, `Fecha_regreso`) VALUES
-(2, 10, 1, 20, 'Aceptada', '2025-05-16', '2025-05-24'),
-(4, 8, 3, 4, 'Pendiente', '2025-05-17', '2025-05-20');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario`
---
-
-CREATE TABLE `usuario` (
-  `ID_Usuario` int(11) NOT NULL,
-  `Nombre` varchar(100) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `Contraseña` varchar(100) NOT NULL,
-  `Fecha_Registro` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`ID_Usuario`, `Nombre`, `Email`, `Contraseña`, `Fecha_Registro`) VALUES
-(2, 'David', 'david@gmail.com', '1234', '2025-05-12'),
-(3, 'Juan', 'juan@gmail.com', '1234', '2025-05-12'),
-(4, 'Antonio', 'antonio@gmail.com', 'usuarip', '2025-05-13'),
-(5, 'Jesus', 'Jesus@gmail.com', 'usuariop', '2025-05-13'),
-(6, 'Juan Rafael', 'jaunrafa@gmail.com', 'juanracule76', '2025-05-13'),
-(7, 'Pedro', 'pedro@gmail.com', 'UsUaRiO-1', '2025-05-13'),
-(8, 'Ana', 'ana3@gmail.com', 'usuario1234', '2025-05-13'),
-(9, 'Gabriel', 'gabri@gmail.com', 'esteban12', '2025-05-14'),
-(10, 'Jacobo', 'jacob30@gmail.com', 'jacob93', '2025-05-14'),
-(11, 'Carlos', 'carlos21@gmail.com', 'carl12', '2025-05-14'),
-(18, 'David', 'david32@gmail.com', 'davicicito11', '2025-05-14'),
-(19, 'Lucas', 'lucasvz@gmail.com', 'realmadrid', '2025-05-14'),
-(20, 'Raul', 'raul12@gmail.com', 'raul01', '2025-05-14'),
-(21, 'Federico', 'fede1998@gmail.com', 'fedelegusta456', '2025-05-14'),
-(22, 'Antonio', 'antonio45@gmail.com', 'guiti02', '2025-05-15'),
-(23, 'Amelia Gonzalez', 'amegonza@gmail.com', '123456Y', '2025-05-21'),
-(24, 'Amelia Fernandez', 'ameferna@gmail.com', '123456Y', '2025-05-21'),
-(25, 'Omar', 'omarcz@gmail.com', '78950231P', '2025-05-21');
+INSERT INTO `reservas` (`ID_Reserva`, `DNI`, `ID_Viaje`, `Codigo_Empleado`, `Estado`, `Fecha_salida`, `Fecha_regreso`) VALUES
+(6, '98865012N', 8, '0004', 'Aceptada', '2025-06-06', '2025-06-10');
 
 -- --------------------------------------------------------
 
@@ -160,7 +119,8 @@ INSERT INTO `viajes` (`ID_Viaje`, `Destino`, `Fecha_salida`, `Fecha_regreso`, `P
 (2, 'Paris', '2025-05-16', '2025-05-23', 880.00, 4),
 (3, 'Barcelona', '2025-05-16', '2025-05-17', 100.00, 2),
 (5, 'Sevilla', '2025-05-24', '2025-05-31', 40.00, 2),
-(6, 'Fuengirola', '2025-05-24', '2025-05-25', 30.00, 2);
+(6, 'Fuengirola', '2025-06-13', '2025-06-15', 30.00, 2),
+(8, 'Nueva York', '2025-05-31', '2025-06-07', 1000.00, 3);
 
 --
 -- Índices para tablas volcadas
@@ -170,29 +130,22 @@ INSERT INTO `viajes` (`ID_Viaje`, `Destino`, `Fecha_salida`, `Fecha_regreso`, `P
 -- Indices de la tabla `agente`
 --
 ALTER TABLE `agente`
-  ADD PRIMARY KEY (`ID_Usuario`),
-  ADD UNIQUE KEY `Codigo_Empleado` (`Codigo_Empleado`);
+  ADD PRIMARY KEY (`Codigo_Empleado`);
 
 --
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  ADD PRIMARY KEY (`ID_Usuario`);
+  ADD PRIMARY KEY (`DNI`);
 
 --
 -- Indices de la tabla `reservas`
 --
 ALTER TABLE `reservas`
   ADD PRIMARY KEY (`ID_Reserva`),
-  ADD KEY `fk_clientes_usuario` (`ID_Cliente`),
   ADD KEY `fkViaje` (`ID_Viaje`),
-  ADD KEY `fkAgente` (`ID_Agente`);
-
---
--- Indices de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`ID_Usuario`);
+  ADD KEY `CPclientes` (`DNI`),
+  ADD KEY `fkAgente` (`Codigo_Empleado`);
 
 --
 -- Indices de la tabla `viajes`
@@ -208,43 +161,25 @@ ALTER TABLE `viajes`
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `ID_Reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `ID_Usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `ID_Reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `viajes`
 --
 ALTER TABLE `viajes`
-  MODIFY `ID_Viaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID_Viaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `agente`
---
-ALTER TABLE `agente`
-  ADD CONSTRAINT `fk_agente_usuario` FOREIGN KEY (`ID_Usuario`) REFERENCES `usuario` (`ID_Usuario`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `clientes`
---
-ALTER TABLE `clientes`
-  ADD CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`ID_Usuario`) REFERENCES `usuario` (`ID_Usuario`) ON DELETE CASCADE;
-
---
 -- Filtros para la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  ADD CONSTRAINT `fkAgente` FOREIGN KEY (`ID_Agente`) REFERENCES `agente` (`ID_Usuario`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fkViaje` FOREIGN KEY (`ID_Viaje`) REFERENCES `viajes` (`ID_Viaje`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_clientes_usuario` FOREIGN KEY (`ID_Cliente`) REFERENCES `clientes` (`ID_Usuario`) ON DELETE CASCADE;
+  ADD CONSTRAINT `CPclientes` FOREIGN KEY (`DNI`) REFERENCES `clientes` (`DNI`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fkAgente` FOREIGN KEY (`Codigo_Empleado`) REFERENCES `agente` (`Codigo_Empleado`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fkViaje` FOREIGN KEY (`ID_Viaje`) REFERENCES `viajes` (`ID_Viaje`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
